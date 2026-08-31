@@ -21,13 +21,13 @@ listen on `127.0.0.1:8080`:
 ```sh
 go build -o captain .
 cp .env.example .env
-set -a; source .env; set +a
 ./captain
 ```
 
-Erga Captain reads configuration from its process environment; it does not load
-`.env` automatically. Keep local values in the ignored `.env` file and use
-`.env.example` as the committed reference.
+At startup, Erga Captain loads `.env` from the current working directory when the
+file exists. Variables already present in the process environment take precedence.
+Keep local values in the ignored `.env` file and use `.env.example` as the committed
+reference.
 
 Useful configuration:
 

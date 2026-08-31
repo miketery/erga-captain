@@ -3,12 +3,15 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -19,6 +22,9 @@ func main() {
 }
 
 func run() error {
+	if err := loadDotEnv(); err != nil {
+		return err
+	}
 	cfg, err := loadConfig()
 	if err != nil {
 		return err
@@ -59,4 +65,11 @@ func run() error {
 		return nil
 	}
 	return err
+}
+
+func loadDotEnv(filenames ...string) error {
+	if err := godotenv.Load(filenames...); err != nil && !errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("load dotenv: %w", err)
+	}
+	return nil
 }
